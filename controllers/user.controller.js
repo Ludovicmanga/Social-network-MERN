@@ -40,13 +40,27 @@ module.exports.follow = (req, res) => {
     
     UserModel.updateOne(
         { _id: req.body.idToFollow },
-        { $set: { follower: req.params.id } }
+        { $set: { followers: req.params.id } }
     )
         .catch(error => res.status(400).json({ error }));
 }
 
 module.exports.unfollow = (req, res) => {
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.idToUnfollow))
+      return res.status(400).send("ID unknown : " + req.params.id);
 
+    UserModel.updateOne(
+        { _id: req.params.id },
+        { $pull: { following: req.body.idToUnfollow } }
+    )
+        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .catch(error => res.status(400).json({ error }));
+    
+    UserModel.updateOne(
+        { _id: req.body.idToUnfollow },
+        { $pull: { followers: req.params.id } }
+    )
+        .catch(error => res.status(400).json({ error }));
 }
 
 module.exports.deleteUser = (req, res) => {
