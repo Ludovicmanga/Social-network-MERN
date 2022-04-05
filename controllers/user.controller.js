@@ -11,10 +11,10 @@ module.exports.userInfo = (req, res) => {
     if(!ObjectId.isValid(req.params.id)) 
         return res.status(400).send('ID unknown ' + req.params.id)
 
-    UserModel.findOne(req.body.id, (error, docs) => {
-        if(!error) res.send(docs);
-        else console.log('ID unknown ' + error)
-    }).select('-password');
+    UserModel.findOne({_id: req.params.id}).select('-password')
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(404).json({ error }))
+        
 }
 
 module.exports.updateUser = (req, res) => {
@@ -23,8 +23,30 @@ module.exports.updateUser = (req, res) => {
       const userObject = {...req.body};
   
       UserModel.updateOne({ _id: req.params.id }, { ...userObject, _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-      .catch(error => res.status(400).json({ error }));
+        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .catch(error => res.status(400).json({ error }));
+}
+
+module.exports.follow = (req, res) => {
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.idToFollow))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    UserModel.updateOne(
+        { _id: req.params.id },
+        { $set: { following: req.body.idToFollow } }
+    )
+        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .catch(error => res.status(400).json({ error }));
+    
+    UserModel.updateOne(
+        { _id: req.body.idToFollow },
+        { $set: { follower: req.params.id } }
+    )
+        .catch(error => res.status(400).json({ error }));
+}
+
+module.exports.unfollow = (req, res) => {
+
 }
 
 module.exports.deleteUser = (req, res) => {
