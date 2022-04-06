@@ -15,7 +15,7 @@ module.exports.signUp = (req, res) => {
     user = new UserModel({pseudo, email, password});
     user.save()
         .then(user => res.status(201).json({ user: user._id }))
-        .catch (error => console.log(error))
+        .catch (error => res.json({ error }))
 }
 
 module.exports.login = (req, res) => {
