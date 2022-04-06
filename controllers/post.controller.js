@@ -29,7 +29,6 @@ module.exports.updatePost = (req, res) => {
       const updatedRecord = {
           message: req.body.message
       }
-      console.log(updatedRecord)
 
       PostModel.updateOne({_id: req.params.id}, {$set: updatedRecord} )
         .then(() => res.status(200).json({mesage: "post modifié"}))
@@ -43,4 +42,30 @@ module.exports.deletePost = (req, res) => {
     PostModel.deleteOne({_id: req.params.id})
         .then(() => res.status(202).json({ message: 'Post supprimé !'}))
         .catch(error => res.status(400).json({ error }))
+}
+
+module.exports.likePost = (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    PostModel.findByIdAndUpdate(req.params.id, {$addToSet: { likers: req.body.userId }}, {new: true})
+        .then(() => {
+            UserModel.findByIdAndUpdate(req.body.userId, {$addToSet: { likes: req.params.id }}, {new: true})
+                .then(() => res.status(200).json({ message: 'Post liké !'}))
+                .catch(error => res.status(200).json({ error }))
+        })
+        .catch(error => res.status(400).json({ error }))
+}
+
+module.exports.unlikePost = (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    PostModel.findByIdAndUpdate(req.params.id, {$pull: { likers: req.body.userId }}, {new: true})
+    .then(() => {
+        UserModel.findByIdAndUpdate(req.body.userId, {$pull: { likes: req.params.id }}, {new: true})
+            .then(() => res.status(200).json({ message: 'Post unliké !'}))
+            .catch(error => res.status(200).json({ error }))
+    })
+    .catch(error => res.status(400).json({ error }))
 }

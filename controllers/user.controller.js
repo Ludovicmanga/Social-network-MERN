@@ -33,14 +33,14 @@ module.exports.follow = (req, res) => {
 
     UserModel.updateOne(
         { _id: req.params.id },
-        { $set: { following: req.body.idToFollow } }
+        { $addToSet: { following: req.body.idToFollow } }
     )
         .then(() => res.status(200).json({ message: 'Objet modifié !'}))
         .catch(error => res.status(400).json({ error }));
     
     UserModel.updateOne(
         { _id: req.body.idToFollow },
-        { $set: { followers: req.params.id } }
+        { $addToSet: { followers: req.params.id } }
     )
         .catch(error => res.status(400).json({ error }));
 }
