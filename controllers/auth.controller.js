@@ -1,5 +1,6 @@
 const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const { signUpErrors, loginErrors } = require('../utils/errors.utils');
 
 const maxAge = 3 * 24 * 60 * 1000;
 
@@ -15,7 +16,10 @@ module.exports.signUp = (req, res) => {
     user = new UserModel({pseudo, email, password});
     user.save()
         .then(user => res.status(201).json({ user: user._id }))
-        .catch (error => res.json({ error }))
+        .catch (error => {
+            const formattedErrors = signUpErrors(error);
+            res.status(200).json({ formattedErrors });
+        })
 }
 
 module.exports.login = (req, res) => {
@@ -29,7 +33,10 @@ module.exports.login = (req, res) => {
                 res.status(200).json({ user: user._id});
             }
         )
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            const formattedErrors = loginErrors(error);
+            res.status(200).json({ formattedErrors });
+        });
 }
 
 module.exports.logout = (req, res) => {
