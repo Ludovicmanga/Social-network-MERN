@@ -18,6 +18,7 @@ module.exports.checkUser = (req, res, next) => {
         })
     } else {
         res.locals.user = null;
+        res.status(200).json({ error: "no valid token found"})
     }
 }
 
