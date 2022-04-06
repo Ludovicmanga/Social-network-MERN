@@ -3,6 +3,8 @@ const authController = require('../controllers/auth.controller');
 const userController = require('../controllers/user.controller');
 
 Router.post("/register", authController.signUp);
+Router.post("/login", authController.login);
+Router.post("/logout", authController.logout);
 
 Router.get("/", userController.getAllUsers);
 Router.get("/:id", userController.userInfo);
