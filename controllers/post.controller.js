@@ -13,6 +13,7 @@ module.exports.createPost = (req, res) => {
     newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
+        picture: req.body.fileName != null ? 'uploads/post/' + fileName : "",
         video: req.body.video,
         likers: [],
         comments: []
@@ -72,7 +73,6 @@ module.exports.unlikePost = (req, res) => {
 }
 
 module.exports.commentPost = (req, res) => {
-    console.log('heey')
     if (!ObjectId.isValid(req.params.id))
       return res.status(400).send("ID unknown : " + req.params.id);
 
