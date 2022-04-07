@@ -7,7 +7,18 @@ require('dotenv').config({path: './config/.env'});
 require('./config/db');
 const {checkUser, requireAuth} = require('./middleware/auth.middleware');
 const PORT = process.env.PORT || 3000;
+const cors = require('cors');
 
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    'allowed-Headers': ['sessionId', 'Content-type'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET, HEAD, PUT, PATCH, DELETE',
+    'preflightContinue': false
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
