@@ -71,3 +71,16 @@ module.exports.deleteUser = (req, res) => {
         .then(() => res.status(202).json({ message: 'Objet supprimé !'}))
         .catch(error => res.status(400).json({ error }))
 }
+
+module.exports.addOrUpdateProfilePicture = (req, res) => {    
+    if (!ObjectId.isValid(req.body.userId))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    UserModel.findByIdAndUpdate(
+        req.body.userId,
+        {$set: { picture: 'uploads/profile/' + req.body.filename }},
+        {new: true, upsert: true, setDefaultsOnInsert: true}
+    )
+            .then(user => res.status(202).json({ user }))
+            .catch(error => res.status(400).json({ error }))
+}
