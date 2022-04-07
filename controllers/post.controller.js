@@ -1,9 +1,10 @@
+const { findByIdAndUpdate } = require('../models/post.model');
 const PostModel = require('../models/post.model');
 const UserModel = require('../models/user.model');
 ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports.readPost = (req, res) => {
-    PostModel.find()
+    PostModel.find().sort({ createdAt: -1 })
         .then(post => res.status(200).json({post}))
         .catch(error => res.status(200).json({error}))
 }
@@ -68,4 +69,61 @@ module.exports.unlikePost = (req, res) => {
             .catch(error => res.status(200).json({ error }))
     })
     .catch(error => res.status(400).json({ error }))
+}
+
+module.exports.commentPost = (req, res) => {
+    console.log('heey')
+    if (!ObjectId.isValid(req.params.id))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    PostModel.findByIdAndUpdate(
+        req.params.id,
+        {$push: {
+            comments: {
+                commenterId: req.body.commenterId,
+                commenterPseudo: req.body.pseudo,
+                text: req.body.text,
+                timestamp: new Date().getTime()
+            }
+        }},
+        {new: true}
+    )
+        .then(post => res.status(200).json({success: 'post commenté', post}))
+        .catch(error => res.status(200).json({ error }))
+}
+
+module.exports.editCommentPost = (req, res) => {
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id))
+      return res.status(400).send("ID unknown : " + req.params.id);
+    
+      PostModel.findById(req.params.id)
+        .then(post => {
+            const theComment = post.comments.find(comment =>
+                comment._id.equals(req.body.commentId)
+            );
+            if(!theComment) return res.status(404).send('Comment not found')
+            theComment.text = req.body.text;
+            post.save()
+                .then(() => res.status(400).json({ post }))
+                .catch(error => res.status(200).json({ error }))
+        })
+        .catch(error => res.status(200).json({ error }))
+}
+
+module.exports.deleteCommentPost = (req, res) => {
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id))
+      return res.status(400).send("ID unknown : " + req.params.id);
+
+    return PostModel.findByIdAndUpdate(
+        req.params.id,
+        {
+            $pull: {
+                comments: {
+                    _id: req.body.commentId
+                }
+            }
+        },
+        {new: true})
+            .then(() => res.status(200).json({ message: 'comment deleted' }))
+            .catch(error => res.status(200).json({ error }))
 }
