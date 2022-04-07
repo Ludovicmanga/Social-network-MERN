@@ -30,3 +30,17 @@ module.exports.loginErrors = (error) => {
     
     return errors;
 }
+
+module.exports.uploadErrors = (error) => {
+    let errors = {format: '', maxSize: ''};
+
+    if(error.message.includes('invalid file')) {
+        errors.format = 'format incompatible'
+    }
+
+    if(error.message.includes('max size')) {
+        errors.format = 'image trop volumineuse'
+    }
+
+    return errors;
+}

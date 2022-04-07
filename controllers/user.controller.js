@@ -1,5 +1,6 @@
 const req = require("express/lib/request");
 const UserModel = require("../models/user.model");
+const { uploadErrors } = require("../utils/errors.utils");
 const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports.getAllUsers = async (req, res) => {
@@ -82,5 +83,8 @@ module.exports.addOrUpdateProfilePicture = (req, res) => {
         {new: true, upsert: true, setDefaultsOnInsert: true}
     )
             .then(user => res.status(202).json({ user }))
-            .catch(error => res.status(400).json({ error }))
+            .catch(error => {
+                formattedErrors = uploadErrors(error);
+                res.status(400).json({ formattedErrors });
+            })
 }

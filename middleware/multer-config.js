@@ -1,5 +1,7 @@
 
+const res = require('express/lib/response');
 const multer = require('multer');
+const { uploadErrors } = require('../utils/errors.utils');
 
 const MIME_TYPES = {
     'image/jpg': 'jpg',
@@ -14,8 +16,14 @@ const storage = multer.diskStorage({
     filename: (req, file, callback) => {
         const name = req.body.name.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];
-        req.body.filename = name + '.' + extension;
-        callback(null, req.body.filename);
+
+        if(!extension) throw Error('incorrect file');
+        if (file.size > 500000) throw Error("max size");
+        console.log(file.size);
+
+        filename = name + '.' + extension;
+        callback(null, filename);
+        req.body.filename = filename;
     }
 })
 
