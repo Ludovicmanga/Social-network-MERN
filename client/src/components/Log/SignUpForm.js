@@ -8,7 +8,41 @@ export default function SignUpForm() {
   const [controlPassword, setControlPassword] = useState('');
 
   const handleRegister = async (e) => {
+    e.preventDefault();
+    const terms = document.getElementById('terms');
+    const pseudoError = document.querySelector('.pseudo.error');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+    const passwordConfirmError = document.querySelector('.password-confirm.error');
+    const termsError = document.querySelector('.terms.error');
 
+    document.querySelectorAll('.error').forEach( error => error.innerHTML = "");
+
+    if (password !== controlPassword || !terms.checked ) {
+      if (password !== controlPassword)
+        passwordConfirmError.innerHTML = "Les mots de passe ne correspondent pas";
+      
+      if(!terms.checked)
+      termsError.innerHTML = "Veuillez accepter les conditions générales";
+    } else {
+      await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_URL}/api/user/register`,
+        data: {
+          pseudo,
+          email,
+          password
+        }
+      })
+        .then(res => {
+          if(res.data.formattedErrors) {
+            pseudoError.innerHTML = res.data.formattedErrors.pseudo;
+            emailError.innerHTML = res.data.formattedErrors.email;
+            passwordError.innerHTML = res.data.formattedErrors.password;
+          }
+        })
+        .catch(error => console.log(error))
+    }
   }
 
   return (
