@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { UidContext } from './AppContext';
+import Logout from './Log/Logout';
 
 export default function Navbar() {
   const uid = useContext(UidContext);
@@ -24,7 +25,7 @@ export default function Navbar() {
                             <h5>Bienvenue 'valeur dynamique !!'</h5>
                         </NavLink>
                     </li>
-                    Logo logout
+                    <Logout />
                 </ul>
              ) : (
                 <ul>
