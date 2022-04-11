@@ -17,6 +17,8 @@ export default function Logout() {
         })
             .then(() => removeCookie('jwt'))
             .catch(error => console.log(error))
+        
+            window.location = "/";
     }
     return (
         <li onClick={logout}>
