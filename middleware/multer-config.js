@@ -12,7 +12,7 @@ const MIME_TYPES = {
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         if(req.body.type === 'user') {
-            path = `${__dirname}/../client/public/uploads/profile`;
+            path = `${__dirname}/../client/public/uploads/profil`;
         };
         if(req.body.type === 'post') {
             path = `${__dirname}/../client/public/uploads/post`;
