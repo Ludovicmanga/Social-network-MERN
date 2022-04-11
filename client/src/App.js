@@ -15,10 +15,14 @@ export default function App() {
             })
               .then(res => 
                 {
-                  console.log(res)
-                  setUid(res.data);
+                  if (res.data.error) {
+                    console.log(res.data.error);
+                  } else {
+                    setUid(res.data);
+                  }
                 })
               .catch(error => console.log("no token"))
+            ;
           }
           fetchToken();
     }, [uid]);
