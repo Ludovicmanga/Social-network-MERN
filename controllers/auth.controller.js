@@ -12,13 +12,12 @@ const createToken = (id) => {
 
 module.exports.signUp = (req, res) => {
     const {pseudo, email, password} = req.body;
-
     user = new UserModel({pseudo, email, password});
     user.save()
         .then(user => res.status(201).json({ user: user._id }))
         .catch (error => {
             const formattedErrors = signUpErrors(error);
-            res.status(400).json({ formattedErrors });
+            res.status(200).json({ formattedErrors });
         })
 }
 
