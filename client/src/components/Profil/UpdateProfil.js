@@ -74,7 +74,7 @@ export default function UpdateProfil() {
                                                     <img src={user.picture} alt='user-picture' />
                                                     <h4>{user.pseudo}</h4>
                                                     <div className='follow-handler'>
-                                                        <FollowHandler idToFollowOrUnfollow = {user._id} />
+                                                        <FollowHandler idToFollowOrUnfollow = {user._id} type='suggestion' />
                                                     </div>
                                                 </li>
                                             )
@@ -99,7 +99,7 @@ export default function UpdateProfil() {
                                                     <img src={user.picture} alt='user-picture' />
                                                     <h4>{user.pseudo}</h4>
                                                     <div className='follow-handler'>
-                                                        <FollowHandler idToFollowOrUnfollow = {user._id} />
+                                                        <FollowHandler idToFollowOrUnfollow = {user._id} type='suggestion' />
                                                     </div>
                                                 </li>
                                             )

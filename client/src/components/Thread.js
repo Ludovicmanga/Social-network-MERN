@@ -1,0 +1,31 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts } from '../actions/post.actions';
+import Card from './Post/Card';
+import { isEmpty } from './Utils';
+
+
+export default function Thread() {
+    const dispatch = useDispatch();
+    const [loadPost, setLoadPost] = useState(true);
+    const posts = useSelector(state => state.postReducer);
+
+    useEffect(() => {
+        if(loadPost) {
+            dispatch(getPosts());
+            setLoadPost(() => false)
+        }        
+    }, [loadPost])
+
+    return (
+        <div className='thread-container'>
+            <ul>
+                {!isEmpty(posts[0]) && (
+                    posts.map(post => {
+                        return <Card post={post} key={post._id} />;
+                    })
+                )}
+            </ul>
+        </div>
+    )
+}
