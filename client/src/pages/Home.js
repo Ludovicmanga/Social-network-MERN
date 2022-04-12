@@ -1,9 +1,14 @@
 import React from 'react'
+import LeftNav from '../components/LeftNav'
+import Thread from '../components/Thread'
 
 export default function Home() {
   return (
-    <div>
-      Hello depuis home
+    <div className='home'>
+      <LeftNav />
+      <div className='main'>
+        <Thread />
+      </div>
     </div>
   )
 }

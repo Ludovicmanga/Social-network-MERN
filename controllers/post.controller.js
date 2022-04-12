@@ -5,7 +5,7 @@ ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports.readPost = (req, res) => {
     PostModel.find().sort({ createdAt: -1 })
-        .then(post => res.status(200).json({post}))
+        .then(post => res.status(200).send(post))
         .catch(error => res.status(200).json({error}))
 }
 
@@ -20,7 +20,7 @@ module.exports.createPost = (req, res) => {
     });
 
     newPost.save()
-        .then(post => res.status(200).json({post}))
+        .then(post => res.status(200).send(post))
         .catch(error => res.status(400).json({error}))
 }
 
@@ -88,7 +88,7 @@ module.exports.commentPost = (req, res) => {
         }},
         {new: true}
     )
-        .then(post => res.status(200).json({success: 'post commenté', post}))
+        .then(post => res.status(200).send(post))
         .catch(error => res.status(200).json({ error }))
 }
 
@@ -104,7 +104,7 @@ module.exports.editCommentPost = (req, res) => {
             if(!theComment) return res.status(404).send('Comment not found')
             theComment.text = req.body.text;
             post.save()
-                .then(() => res.status(400).json({ post }))
+                .then(() => res.status(400).send(post))
                 .catch(error => res.status(200).json({ error }))
         })
         .catch(error => res.status(200).json({ error }))

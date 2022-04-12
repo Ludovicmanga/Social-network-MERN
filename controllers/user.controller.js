@@ -13,7 +13,7 @@ module.exports.userInfo = (req, res) => {
         return res.status(400).send('ID unknown ' + req.params.id)
 
     UserModel.findOne({_id: req.params.id}).select('-password')
-        .then(user => res.status(200).json(user))
+        .then(user => res.status(200).send(user))
         .catch(error => res.status(404).json({ error }))
 }
 
@@ -88,7 +88,7 @@ module.exports.addOrUpdateProfilePicture = (req, res) => {
         {$set: { picture: 'uploads/profil/' + req.body.fileName }},
         {new: true, upsert: true, setDefaultsOnInsert: true}
     )
-            .then(user => res.status(202).json({ user }))
+            .then(user => res.status(202).send(user))
             .catch(error => {
                 formattedErrors = uploadErrors(error);
                 res.status(400).json({ formattedErrors });
