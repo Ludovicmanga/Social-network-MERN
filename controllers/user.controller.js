@@ -5,7 +5,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports.getAllUsers = async (req, res) => {
     const users = await UserModel.find().select('-password')
-        .then(users => res.status(200).json({ users }));
+        .then(users => res.status(200).send(users));
 }
 
 module.exports.userInfo = (req, res) => {
@@ -30,7 +30,7 @@ module.exports.updateUser = (req, res) => {
            },
            { new: true, upsert: true, setDefaultsOnInsert: true }
         )
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .then((user ) => res.status(200).send(user))
         .catch(error => res.status(400).json({ error }));
 }
 
