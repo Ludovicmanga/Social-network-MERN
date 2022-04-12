@@ -3,6 +3,8 @@ import axios from "axios";
 export const GET_USER = "GET_USER";
 export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
+export const FOLLOW_USER = "FOLLOW_USER";
+export const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -37,6 +39,28 @@ export const updateBio = (bio, userId) => {
             .put(`${process.env.REACT_APP_API_URL}/api/user/${userId}`, { bio }, {withCredentials: true})
             .then(res => {
                 dispatch({type: UPDATE_BIO, payload: res.data.bio})
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const followUser = (idToFollow, followerId) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/user/follow/${followerId}`, { idToFollow }, {withCredentials: true})
+            .then(res => {
+                dispatch({type: FOLLOW_USER, payload: { idToFollow }})
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const unfollowUser = (idToUnfollow, unfollowerId) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/user/unfollow/${unfollowerId}`, { idToUnfollow }, {withCredentials: true})
+            .then(res => {
+                dispatch({type: UNFOLLOW_USER, payload: { idToUnfollow }})
             })
             .catch(error => console.log(error))
     }

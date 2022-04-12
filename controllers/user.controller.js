@@ -42,7 +42,7 @@ module.exports.follow = (req, res) => {
         { _id: req.params.id },
         { $addToSet: { following: req.body.idToFollow } }
     )
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .then(user => res.status(200).send(user))
         .catch(error => res.status(400).json({ error }));
     
     UserModel.updateOne(
@@ -60,7 +60,7 @@ module.exports.unfollow = (req, res) => {
         { _id: req.params.id },
         { $pull: { following: req.body.idToUnfollow } }
     )
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .then(user => res.status(200).send(user))
         .catch(error => res.status(400).json({ error }));
     
     UserModel.updateOne(

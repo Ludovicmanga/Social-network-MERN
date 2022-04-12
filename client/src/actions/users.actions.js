@@ -12,3 +12,4 @@ export const getUsers = () => {
                 .catch(error => console.log(error))
     }
 }
+
