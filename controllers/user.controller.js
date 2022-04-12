@@ -30,7 +30,7 @@ module.exports.updateUser = (req, res) => {
            },
            { new: true, upsert: true, setDefaultsOnInsert: true }
         )
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+        .then((user ) => res.status(200).send(user))
         .catch(error => res.status(400).json({ error }));
 }
 

@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const GET_USER = "GET_USER";
 export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
+export const UPDATE_BIO = "UPDATE_BIO";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -28,5 +29,16 @@ export const uploadPicture = (data, userId) => {
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
+    }
+}
+
+export const updateBio = (bio, userId) => {
+    return (dispatch) => {
+        return axios
+            .put(`${process.env.REACT_APP_API_URL}/api/user/${userId}`, { bio }, {withCredentials: true})
+            .then(res => {
+                dispatch({type: UPDATE_BIO, payload: res.data.bio})
+            })
+            .catch(error => console.log(error))
     }
 }
