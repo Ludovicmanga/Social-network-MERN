@@ -8,7 +8,7 @@ export default function Profil() {
 
   return (
     <div className='profil-page'>
-      {uid ? ( <UpdateProfil />) : (
+      {uid ? ( <UpdateProfil /> ) : (
         <div className='log-container'>
           <Log signin={false} signup={true}/>
           <div className="img-container">

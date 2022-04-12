@@ -14,7 +14,7 @@ export default function LeftNav() {
                   <img src="./img/icons/rocket.svg" alt="trending" />
               </NavLink>
               <br />
-              <NavLink to='/profil' exact activeClassName='active-left-nav'>
+              <NavLink to='/profil' exactw activeClassName='active-left-nav'>
                   <img src="./img/icons/user.svg" alt="profil" />
               </NavLink>
               <br />
