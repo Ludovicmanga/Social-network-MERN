@@ -5,14 +5,15 @@ import { dateParser, isEmpty } from '../Utils';
 import LikeButton from './LikeButton';
 import  { updatePost } from '../../actions/post.actions.js';
 import DeleteCard from './DeleteCard';
+import CardComments from './CardComments';
 
 export default function Card({ post }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdated, setIsUpdated] = useState(false);
     const [textUpdate, setTextUpdate] = useState(null);
+    const [showComments, setShowComments] = useState(false);
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
-    const loggedUserData = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
 
     const updateItem = () => {
@@ -34,13 +35,13 @@ export default function Card({ post }) {
             <>
                 <div className='card-left'>
                     <img src = {
-                        !isEmpty(usersData[0]) &&
-                        usersData.map(user => {
-                            if (user._id === post.posterId) {
-                                return user.picture
-                            } else return null
-                        }).join('')
-                    }
+                            !isEmpty(usersData[0]) &&
+                            usersData.map(user => {
+                                if (user._id === post.posterId) {
+                                    return user.picture
+                                } else return null
+                            }).join('')
+                        }
                         alt='post-pic'
                     />
                 </div>
@@ -57,7 +58,7 @@ export default function Card({ post }) {
                                 })
                             }
                             </h3>
-                            {post.posterId !== loggedUserData._id && (
+                            {post.posterId !== userData._id && (
                                 <FollowHandler idToFollowOrUnfollow = {post.posterId} type='card' />
                             )}
                             
@@ -101,18 +102,24 @@ export default function Card({ post }) {
                             <div onClick={() => setIsUpdated(!isUpdated)}>
                                 <img src="./img/icons/edit.svg" alt="edit" />
                             </div>
-                            
                             <DeleteCard postId={post._id} />
                         </div>
                     )}
                     <div className='card-footer'>
                         <div className='comment-icon'>
-                            <img src="./img/icons/message1.svg" alt="comment" />
+                            <img
+                                src="./img/icons/message1.svg"
+                                onClick={ () => setShowComments(!showComments) }  
+                                alt="comment" 
+                            />
                             <span>{post.comments.length}</span>
                         </div>
                         <LikeButton post={post} />
                         <img src="./img/icons/share.svg" alt="share" />
                     </div>
+                    { showComments && (
+                        <CardComments post={post} />
+                    ) }
                 </div>
             </>
         )}
