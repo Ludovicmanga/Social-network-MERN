@@ -8,14 +8,24 @@ import { isEmpty } from './Utils';
 export default function Thread() {
     const dispatch = useDispatch();
     const [loadPost, setLoadPost] = useState(true);
+    const [count, setCount] = useState(5);
     const posts = useSelector(state => state.postReducer);
 
+    const loadMore = () => {
+        if (window.innerHeight + document.documentElement.scrollTop + 1 > document.scrollingElement.scrollHeight)
+            setLoadPost(() => true)
+    }
+    
     useEffect(() => {
         if(loadPost) {
-            dispatch(getPosts());
-            setLoadPost(() => false)
-        }        
-    }, [loadPost])
+            dispatch(getPosts(count));
+            setLoadPost(() => false);
+            setCount(() => count + 5)
+        }
+        window.addEventListener('scroll', loadMore);
+        return () => window.removeEventListener('scroll', loadMore)
+
+    }, [loadPost, dispatch, count])
 
     return (
         <div className='thread-container'>
