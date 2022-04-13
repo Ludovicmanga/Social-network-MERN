@@ -20,7 +20,7 @@ export default function userReducer(state = initialState, action) {
             return {
             ...state,
             following: [action.payload.idToFollow, ...state.following]
-        }
+            }
         case UNFOLLOW_USER:
             return {
                 ...state,

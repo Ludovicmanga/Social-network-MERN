@@ -53,7 +53,7 @@ module.exports.likePost = (req, res) => {
     PostModel.findByIdAndUpdate(req.params.id, {$addToSet: { likers: req.body.userId }}, {new: true})
         .then(() => {
             UserModel.findByIdAndUpdate(req.body.userId, {$addToSet: { likes: req.params.id }}, {new: true})
-                .then(() => res.status(200).json({ message: 'Post liké !'}))
+                .then(post => res.status(200).send(post))
                 .catch(error => res.status(200).json({ error }))
         })
         .catch(error => res.status(400).json({ error }))
@@ -66,7 +66,7 @@ module.exports.unlikePost = (req, res) => {
     PostModel.findByIdAndUpdate(req.params.id, {$pull: { likers: req.body.userId }}, {new: true})
     .then(() => {
         UserModel.findByIdAndUpdate(req.body.userId, {$pull: { likes: req.params.id }}, {new: true})
-            .then(() => res.status(200).json({ message: 'Post unliké !'}))
+            .then(() => res.status(200).send(post))
             .catch(error => res.status(200).json({ error }))
     })
     .catch(error => res.status(400).json({ error }))
