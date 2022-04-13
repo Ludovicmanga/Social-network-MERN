@@ -4,6 +4,7 @@ import FollowHandler from '../Profil/FollowHandler';
 import { dateParser, isEmpty } from '../Utils';
 import LikeButton from './LikeButton';
 import  { updatePost } from '../../actions/post.actions.js';
+import DeleteCard from './DeleteCard';
 
 export default function Card({ post }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -100,6 +101,8 @@ export default function Card({ post }) {
                             <div onClick={() => setIsUpdated(!isUpdated)}>
                                 <img src="./img/icons/edit.svg" alt="edit" />
                             </div>
+                            
+                            <DeleteCard postId={post._id} />
                         </div>
                     )}
                     <div className='card-footer'>
