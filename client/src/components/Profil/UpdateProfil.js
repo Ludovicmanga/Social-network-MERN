@@ -27,7 +27,7 @@ export default function UpdateProfil() {
             <div className='update-container'>
                 <div className='left-part'>
                     <h3>Photo de profil</h3>
-                    <img src={userData.picture} alt="user-picture" />
+                    <img src={userData.picture} alt="user-pic" />
                     <UploadImg type='user' />
                 </div>
                 <div className='right-part'>
@@ -71,7 +71,7 @@ export default function UpdateProfil() {
                                         if (user._id === userData.following[i]) {
                                             return (
                                                 <li key={user._id}>
-                                                    <img src={user.picture} alt='user-picture' />
+                                                    <img src={user.picture} alt='user-pic' />
                                                     <h4>{user.pseudo}</h4>
                                                     <div className='follow-handler'>
                                                         <FollowHandler idToFollowOrUnfollow = {user._id} type='suggestion' />
@@ -79,7 +79,7 @@ export default function UpdateProfil() {
                                                 </li>
                                             )
                                         }
-                                    }
+                                    } return null
                                 })}
                             </ul>
                         </div>
@@ -96,7 +96,7 @@ export default function UpdateProfil() {
                                         if (user._id === userData.followers[i]) {
                                             return (
                                                 <li key={user._id}>
-                                                    <img src={user.picture} alt='user-picture' />
+                                                    <img src={user.picture} alt='user-pic' />
                                                     <h4>{user.pseudo}</h4>
                                                     <div className='follow-handler'>
                                                         <FollowHandler idToFollowOrUnfollow = {user._id} type='suggestion' />
@@ -104,7 +104,7 @@ export default function UpdateProfil() {
                                                 </li>
                                             )
                                         }
-                                    }
+                                    } return null
                                 })}
                             </ul>
                         </div>

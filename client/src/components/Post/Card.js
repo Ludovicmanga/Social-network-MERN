@@ -25,10 +25,10 @@ export default function Card({ post }) {
                         usersData.map(user => {
                             if (user._id === post.posterId) {
                                 return user.picture
-                            }
+                            } else return null
                         }).join('')
                     }
-                        alt='post-picture'
+                        alt='post-pic'
                     />
                 </div>
                 <div className='card-right'>
@@ -40,7 +40,7 @@ export default function Card({ post }) {
                                 usersData.map(user => {
                                     if (user._id === post.posterId) {
                                         return user.pseudo
-                                    }
+                                    } else return null
                                 })
                             }
                             </h3>
@@ -54,7 +54,7 @@ export default function Card({ post }) {
                     <p>{post.message}</p>
                     {
                         post.picture && (
-                            <img src={post.picture} alt='card-picture' className='card-pic' />
+                            <img src={post.picture} alt='card-pic' className='card-pic' />
                         )
                     }
                     {

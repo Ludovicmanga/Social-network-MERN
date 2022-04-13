@@ -20,12 +20,12 @@ export default function Thread() {
         if(loadPost) {
             dispatch(getPosts(count));
             setLoadPost(() => false);
-            setCount(() => count + 5)
+            setCount(c => c + 5)
         }
         window.addEventListener('scroll', loadMore);
         return () => window.removeEventListener('scroll', loadMore)
 
-    }, [loadPost, dispatch, count])
+    }, [loadPost, dispatch])
 
     return (
         <div className='thread-container'>
