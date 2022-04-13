@@ -3,13 +3,14 @@ import axios from 'axios';
 export const GET_POSTS = "GET_POSTS";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
+export const UPDATE_POST = "UPDATE_POST";
 
 export const getPosts = (num) => {
     return (dispatch) => {
         return axios
             .get(`${process.env.REACT_APP_API_URL}/api/post`, {withCredentials: true})
             .then(res => {
-                const array = res.data.slice(0, num)
+                const array = res.data.slice(0, num);
                 dispatch({ type: GET_POSTS, payload: array })
             })
             .catch(error => console.log(error))
@@ -37,4 +38,17 @@ export const unlikePost = (userId, postId) => {
             .catch(error => console.log(error))
     }
 }
+
+export const updatePost = (postId, updatedMessage) => {
+    return (dispatch) => {
+        return axios
+            .put(`${process.env.REACT_APP_API_URL}/api/post/${postId}`, { updatedMessage }, {withCredentials: true})
+            .then(res => {
+                console.log(res)
+                dispatch({ type: UPDATE_POST, payload: { updatedMessage, postId }})
+            })
+            .catch(error => console.log(error))
+    }
+}
+
 

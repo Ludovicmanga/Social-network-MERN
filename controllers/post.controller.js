@@ -28,12 +28,14 @@ module.exports.updatePost = (req, res) => {
     if (!ObjectId.isValid(req.params.id))
       return res.status(400).send("ID unknown : " + req.params.id);
 
-      const updatedRecord = {
-          message: req.body.message
-      }
+      const message = req.body.updatedMessage
 
-      PostModel.updateOne({_id: req.params.id}, {$set: updatedRecord} )
-        .then(() => res.status(200).json({mesage: "post modifié"}))
+      PostModel.findByIdAndUpdate(
+          req.params.id,
+          {$set: {message}},
+          { new: true, upsert: true, setDefaultsOnInsert: true }
+      )
+        .then(post => res.status(200).send(post))
         .catch(error => res.status(200).json({ error }))
 }
 

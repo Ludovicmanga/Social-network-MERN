@@ -19,8 +19,8 @@ export default function Thread() {
     useEffect(() => {
         if(loadPost) {
             dispatch(getPosts(count));
-            setLoadPost(() => false);
-            setCount(c => c + 5)
+            setLoadPost(false);
+            setCount(count + 5);
         }
         window.addEventListener('scroll', loadMore);
         return () => window.removeEventListener('scroll', loadMore)
