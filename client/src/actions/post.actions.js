@@ -75,3 +75,25 @@ export const addCommentPost = (postId, commenterId, commenterPseudo, text) => {
             .catch(error => console.log(error))
     }
 }
+
+export const editCommentPost = (postId, commentId,  text) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/post/edit-comment-post/${postId}`, { commentId, text }, {withCredentials: true})
+            .then(res => {
+                dispatch({ type: EDIT_COMMENT_POST, payload: {postId, commentId, text} })
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const deleteCommentPost = (postId, commentId) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/post/delete-comment-post/${postId}`, { commentId }, {withCredentials: true})
+            .then(res => {
+                dispatch({ type: DELETE_COMMENT_POST, payload: {postId, commentId} })
+            })
+            .catch(error => console.log(error))
+    }
+}
