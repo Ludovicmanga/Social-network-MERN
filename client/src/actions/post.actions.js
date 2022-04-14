@@ -5,6 +5,9 @@ export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
+export const ADD_COMMENT_POST = "ADD_COMMENT_POST";
+export const EDIT_COMMENT_POST = "EDIT_COMMENT_POST";
+export const DELETE_COMMENT_POST = "DELETE_COMMENT_POST";
 
 export const getPosts = (num) => {
     return (dispatch) => {
@@ -57,6 +60,39 @@ export const deletePost = (postId) => {
             .delete(`${process.env.REACT_APP_API_URL}/api/post/${postId}`, {withCredentials: true})
             .then(res => {
                 dispatch({ type: DELETE_POST, payload: postId })
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const addCommentPost = (postId, commenterId, commenterPseudo, text) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/post/comment-post/${postId}`, { commenterId, commenterPseudo, text }, {withCredentials: true})
+            .then(res => {
+                dispatch({ type: ADD_COMMENT_POST, payload: {postId} })
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const editCommentPost = (postId, commentId,  text) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/post/edit-comment-post/${postId}`, { commentId, text }, {withCredentials: true})
+            .then(res => {
+                dispatch({ type: EDIT_COMMENT_POST, payload: {postId, commentId, text} })
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const deleteCommentPost = (postId, commentId) => {
+    return (dispatch) => {
+        return axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/post/delete-comment-post/${postId}`, { commentId }, {withCredentials: true})
+            .then(res => {
+                dispatch({ type: DELETE_COMMENT_POST, payload: {postId, commentId} })
             })
             .catch(error => console.log(error))
     }

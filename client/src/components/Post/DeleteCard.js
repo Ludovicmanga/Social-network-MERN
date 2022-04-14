@@ -3,9 +3,7 @@ import { useDispatch } from 'react-redux'
 import { deletePost } from '../../actions/post.actions';
 
 const DeleteCard = ({ postId }) => {
-
     const dispatch = useDispatch();
-
     const deleteQuote = () => {
         dispatch(deletePost(postId))
     }

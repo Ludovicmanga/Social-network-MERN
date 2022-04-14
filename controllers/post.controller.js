@@ -95,7 +95,7 @@ module.exports.commentPost = (req, res) => {
 }
 
 module.exports.editCommentPost = (req, res) => {
-    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id))
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.commentId))
       return res.status(400).send("ID unknown : " + req.params.id);
     
       PostModel.findById(req.params.id)
@@ -106,14 +106,14 @@ module.exports.editCommentPost = (req, res) => {
             if(!theComment) return res.status(404).send('Comment not found')
             theComment.text = req.body.text;
             post.save()
-                .then(() => res.status(400).send(post))
+                .then(post => res.status(200).send(post))
                 .catch(error => res.status(200).json({ error }))
         })
         .catch(error => res.status(200).json({ error }))
 }
 
 module.exports.deleteCommentPost = (req, res) => {
-    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id))
+    if (!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.commentId))
       return res.status(400).send("ID unknown : " + req.params.id);
 
     return PostModel.findByIdAndUpdate(
