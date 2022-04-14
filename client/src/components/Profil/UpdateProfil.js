@@ -28,7 +28,7 @@ export default function UpdateProfil() {
                 <div className='left-part'>
                     <h3>Photo de profil</h3>
                     <img src={userData.picture} alt="user-pic" />
-                    <UploadImg type='user' />
+                    <UploadImg postType='user' />
                 </div>
                 <div className='right-part'>
                     <div className='bio-update'>

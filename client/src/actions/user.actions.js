@@ -20,7 +20,7 @@ export const getUser = (uid) => {
 export const uploadPicture = (data, userId) => {
     return (dispatch) => {
         return axios
-                .post(`${process.env.REACT_APP_API_URL}/api/user/upload`, data, {withCredentials: true})
+                .post(`${process.env.REACT_APP_API_URL}/api/user/upload`, data , {withCredentials: true})
                 .then(res => {
                     return axios
                         .get(`${process.env.REACT_APP_API_URL}/api/user/${userId}`)
