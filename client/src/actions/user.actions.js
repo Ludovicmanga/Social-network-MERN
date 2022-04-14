@@ -38,6 +38,7 @@ export const updateBio = (bio, userId) => {
         return axios
             .put(`${process.env.REACT_APP_API_URL}/api/user/${userId}`, { bio }, {withCredentials: true})
             .then(res => {
+                console.log(res.data.bio)
                 dispatch({type: UPDATE_BIO, payload: res.data.bio})
             })
             .catch(error => console.log(error))
