@@ -13,7 +13,7 @@ module.exports.createPost = (req, res) => {
     newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
-        picture: req.body.fileName != null ? 'uploads/post/' + fileName : "",
+        picture: req.body.fileName != null ? 'uploads/posts/' + fileName : "",
         video: req.body.video,
         likers: [],
         comments: []
@@ -21,7 +21,7 @@ module.exports.createPost = (req, res) => {
 
     newPost.save()
         .then(post => res.status(200).send(post))
-        .catch(error => res.status(400).json({error}))
+        .catch(error => console.log(error))
 }
 
 module.exports.updatePost = (req, res) => {

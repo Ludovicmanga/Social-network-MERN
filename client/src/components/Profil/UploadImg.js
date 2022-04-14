@@ -12,7 +12,7 @@ export default function UploadImg( props ) {
         const data = new FormData();
         data.append("name", userData.pseudo);
         data.append("userId", userData._id);
-        data.append("type", props.type);
+        data.append("postType", props.postType);
         data.append("file", file);
 
         dispatch(uploadPicture(data, userData._id));

@@ -11,12 +11,14 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        if(req.body.type === 'user') {
+        console.log(req.body)
+        if(req.body.postType === 'user') {
             path = `${__dirname}/../client/public/uploads/profil`;
         };
-        if(req.body.type === 'post') {
-            path = `${__dirname}/../client/public/uploads/post`;
+        if(req.body.postType === 'post') {
+            path = `${__dirname}/../client/public/uploads/posts`;
         };
+        
         callback(null, path)
     },
     filename: (req, file, callback) => {
@@ -25,10 +27,10 @@ const storage = multer.diskStorage({
 
         if(!extension) throw Error('incorrect file');
 
-        if(req.body.type === 'user') {
+        if(req.body.postType === 'user') {
             fileName = name + '.' + extension;
         };
-        if(req.body.type === 'post') {
+        if(req.body.postType === 'post') {
             fileName = name + Date.now() + '.' + extension;
         };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { addPost, getPosts } from '../../actions/post.actions';
 import { isEmpty, timestampParser } from '../Utils';
 
 const NewPostForm = () => {
@@ -8,13 +9,43 @@ const NewPostForm = () => {
     const [message, setMessage] = useState("");
     const [postPicture, setPostPicture] = useState(null);
     const [video, setVideo] = useState('');
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState();
     const userData = useSelector((state) => state.userReducer);
 
-    const handlePicture = () => {
+    const dispatch = useDispatch();
+
+    const handlePost = async (e) => {
+        e.preventDefault();
+        if (message || postPicture || video ) {
+
+            const data = new FormData();
+            data.append('posterId', userData._id);
+            data.append('postType', 'post');
+            data.append('name', userData.pseudo);
+            data.append('message', message);
+            if (file) {
+                data.append('file', file);
+            }
+            console.log(file)
+            console.log(video)
+            data.append('video', video);
+            
+            await dispatch(addPost(data));
+            dispatch(getPosts());
+            cancelPost();
+
+        } else {
+            alert('Veuillez entrer un message')
+        }
     }
 
-    const handlePost = () => {
+    const handlePicture = (e) => {
+        e.preventDefault();
+        
+        setPostPicture(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+        console.log(file);
+        setVideo('');
     }
 
     const handleVideo = () => {
@@ -124,7 +155,7 @@ const NewPostForm = () => {
                                 { message || postPicture || video.length > 20 ? (
                                     <button className='cancel' onClick={cancelPost}>Annuler message</button>
                                 ) : null}
-                                <button className='send' onClick={handlePost}>Poster le message</button>
+                                <button className='send' onClick={(e) => handlePost(e)}>Poster le message</button>
                             </div>
                         </div>
                     </div>
