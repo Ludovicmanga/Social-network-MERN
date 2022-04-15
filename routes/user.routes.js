@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const authController = require('../controllers/auth.controller');
 const userController = require('../controllers/user.controller');
-const multer = require('../middleware/multer-config');
+const multerMiddleware = require('../middleware/multer-config');
 
 router.post("/register", authController.signUp);
 router.post("/login", authController.login);
@@ -14,6 +14,14 @@ router.delete("/:id", userController.deleteUser);
 router.patch("/follow/:id", userController.follow);
 router.patch("/unfollow/:id", userController.unfollow);
 
-router.post("/upload", multer , userController.addOrUpdateProfilePicture);
+router.post("/upload", (req, res) => {
+    multerMiddleware(req, res, function (error) {
+        if (error) {
+            const formatedErrors = uploadErrors(error);
+            res.send(formatedErrors);
+        }
+    });
+    userController.addOrUpdateProfilePicture(req, res);
+  });
 
 module.exports = router;

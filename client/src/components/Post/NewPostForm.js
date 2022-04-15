@@ -26,8 +26,6 @@ const NewPostForm = () => {
             if (file) {
                 data.append('file', file);
             }
-            console.log(file)
-            console.log(video)
             data.append('video', video);
             
             await dispatch(addPost(data));
