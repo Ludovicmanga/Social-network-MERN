@@ -1,7 +1,7 @@
 
 const res = require('express/lib/response');
+const req = require('express/lib/request');
 const multer = require('multer');
-const { uploadErrors } = require('../utils/errors.utils');
 
 const MIME_TYPES = {
     'image/jpg': 'jpg',
@@ -11,7 +11,6 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        console.log(req.body)
         if(req.body.postType === 'user') {
             path = `${__dirname}/../client/public/uploads/profil`;
         };
@@ -25,8 +24,6 @@ const storage = multer.diskStorage({
         const name = req.body.name.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];
 
-        if(!extension) throw Error('incorrect file');
-
         if(req.body.postType === 'user') {
             fileName = name + '.' + extension;
         };
@@ -35,8 +32,23 @@ const storage = multer.diskStorage({
         };
 
         callback(null, fileName);
-        req.body.fileName = fileName;
     }
 })
 
-module.exports = multer({ storage }).single('file');
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('invalid file'));
+    }
+  }
+
+  const maxSize = 50000;
+
+
+module.exports = multer({ 
+    storage,
+    fileFilter,
+    limits: { fileSize: maxSize }
+}).single('file');

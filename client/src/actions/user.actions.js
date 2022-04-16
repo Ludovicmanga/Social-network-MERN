@@ -5,6 +5,7 @@ export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
 export const FOLLOW_USER = "FOLLOW_USER";
 export const UNFOLLOW_USER = "UNFOLLOW_USER";
+export const GET_USER_ERROR = "GET_USER_ERROR";
 
 export const getUser = (uid) => {
     return (dispatch) => {
@@ -22,12 +23,17 @@ export const uploadPicture = (data, userId) => {
         return axios
                 .post(`${process.env.REACT_APP_API_URL}/api/user/upload`, data , {withCredentials: true})
                 .then(res => {
-                    return axios
-                        .get(`${process.env.REACT_APP_API_URL}/api/user/${userId}`)
-                        .then(res => {
-                            dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture})
-                        })
-                        .catch(error => console.log(error))
+                    if (res.data.formattedErrors) {
+                        dispatch({ type: GET_USER_ERROR, payload: res.data.formattedErrors })
+                    } else {
+                        dispatch({ type: GET_USER_ERROR, payload: '' })
+                        return axios
+                            .get(`${process.env.REACT_APP_API_URL}/api/user/${userId}`)
+                            .then(res => {
+                                dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture})
+                            })
+                            .catch(error => console.log(error))
+                    }
                 })
                 .catch(error => console.log(error))
     }
@@ -38,6 +44,7 @@ export const updateBio = (bio, userId) => {
         return axios
             .put(`${process.env.REACT_APP_API_URL}/api/user/${userId}`, { bio }, {withCredentials: true})
             .then(res => {
+                console.log(res.data.bio)
                 dispatch({type: UPDATE_BIO, payload: res.data.bio})
             })
             .catch(error => console.log(error))

@@ -38,7 +38,7 @@ module.exports.uploadErrors = (error) => {
         errors.format = 'format incompatible'
     }
 
-    if(error.message.includes('max size')) {
+    if(error.message.includes('File too large')) {
         errors.format = 'image trop volumineuse'
     }
 

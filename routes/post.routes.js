@@ -1,9 +1,17 @@
 const router = require('express').Router();
 const postController = require('../controllers/post.controller');
-const multer = require('../middleware/multer-config');
+const multerMiddleware = require('../middleware/multer-config');
+const { uploadErrors } = require('../utils/errors.utils');
 
 router.get("/", postController.readPost);
-router.post("/", multer, postController.createPost);
+router.post("/", (req, res, next) => {
+    multerMiddleware(req, res, function (error) {
+        if (error) {
+            const formattedErrors = uploadErrors(error);
+            res.send({formattedErrors});
+        } else next();
+    });
+  }, postController.createPost);
 router.put("/:id", postController.updatePost);
 router.delete("/:id", postController.deletePost);
 router.patch("/like-post/:id", postController.likePost);

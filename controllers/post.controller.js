@@ -13,7 +13,7 @@ module.exports.createPost = (req, res) => {
     newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
-        picture: req.body.fileName != null ? 'uploads/posts/' + fileName : "",
+        picture: req.file.filename != null ? 'uploads/posts/' + req.file.filename : "",
         video: req.body.video,
         likers: [],
         comments: []

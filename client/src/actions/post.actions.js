@@ -9,6 +9,7 @@ export const DELETE_POST = "DELETE_POST";
 export const ADD_COMMENT_POST = "ADD_COMMENT_POST";
 export const EDIT_COMMENT_POST = "EDIT_COMMENT_POST";
 export const DELETE_COMMENT_POST = "DELETE_COMMENT_POST";
+export const GET_POST_ERROR = "GET_POST_ERROR";
 
 export const getPosts = (num) => {
     return (dispatch) => {
@@ -26,6 +27,13 @@ export const addPost = (data) => {
     return (dispatch) => {
       return axios
         .post(`${process.env.REACT_APP_API_URL}/api/post/`, data)
+        .then(res => {
+            if(res.data.formattedErrors) {
+                dispatch({type: GET_POST_ERROR, payload: res.data.formattedErrors})
+            } else {
+                dispatch({type: GET_POST_ERROR, payload: ''})
+            }
+        })
     };
   };
   

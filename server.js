@@ -30,6 +30,10 @@ app.get('/jwtid', requireAuth, (req, res) => {
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
 
+app.use((err, req, res, next) => {
+    console.log(err)
+  })
+
 app.listen(PORT, () => {
     console.log(`le serveur est lancé sur le port ${PORT}`);
 })

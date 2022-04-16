@@ -10,10 +10,11 @@ export default function UpdateProfil() {
     const [updateForm, setUpdateForm] = useState(false);
     const userData = useSelector(state => state.userReducer);
     const usersData = useSelector(state => state.usersReducer);
-    const [bio, setBio] = useState('');
+    const [bio, setBio] = useState(userData.bio);
     const dispatch = useDispatch();
     const [followingPopup, setFollowingPopup] = useState(false);
     const [followersPopup, setFollowersPopup] = useState(false);
+    const error = useSelector(state => state.errorReducer.userError);
 
     const handleUpdate = () => {
         dispatch(updateBio(bio, userData._id));
@@ -29,6 +30,8 @@ export default function UpdateProfil() {
                     <h3>Photo de profil</h3>
                     <img src={userData.picture} alt="user-pic" />
                     <UploadImg postType='user' />
+                    {error.format && (<p>{error.format}</p>)}
+                    {error.maxSize && (<p>{error.maxSize}</p>)}
                 </div>
                 <div className='right-part'>
                     <div className='bio-update'>
@@ -45,7 +48,7 @@ export default function UpdateProfil() {
                                     type="text"
                                     defaultValue={userData.bio}
                                     onChange={(e) => {
-                                        setBio(e.target.value)
+                                        setBio(bio => bio = e.target.value);
                                     }}
                                 >
                                 </textarea>

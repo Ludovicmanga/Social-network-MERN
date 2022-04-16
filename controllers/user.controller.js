@@ -85,7 +85,7 @@ module.exports.addOrUpdateProfilePicture = (req, res) => {
 
     UserModel.findByIdAndUpdate(
         req.body.userId,
-        {$set: { picture: 'uploads/profil/' + req.body.fileName }},
+        {$set: { picture: 'uploads/profil/' + req.file.filename }},
         {new: true, upsert: true, setDefaultsOnInsert: true}
     )
             .then(user => res.status(202).send(user))
