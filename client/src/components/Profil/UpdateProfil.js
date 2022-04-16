@@ -14,6 +14,7 @@ export default function UpdateProfil() {
     const dispatch = useDispatch();
     const [followingPopup, setFollowingPopup] = useState(false);
     const [followersPopup, setFollowersPopup] = useState(false);
+    const error = useSelector(state => state.errorReducer.userError);
 
     const handleUpdate = () => {
         dispatch(updateBio(bio, userData._id));
@@ -29,6 +30,8 @@ export default function UpdateProfil() {
                     <h3>Photo de profil</h3>
                     <img src={userData.picture} alt="user-pic" />
                     <UploadImg postType='user' />
+                    {error.format && (<p>{error.format}</p>)}
+                    {error.maxSize && (<p>{error.maxSize}</p>)}
                 </div>
                 <div className='right-part'>
                     <div className='bio-update'>

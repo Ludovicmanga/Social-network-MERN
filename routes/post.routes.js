@@ -7,8 +7,8 @@ router.get("/", postController.readPost);
 router.post("/", (req, res, next) => {
     multerMiddleware(req, res, function (error) {
         if (error) {
-            const formatedErrors = uploadErrors(error);
-            res.send(formatedErrors);
+            const formattedErrors = uploadErrors(error);
+            res.send({formattedErrors});
         } else next();
     });
   }, postController.createPost);

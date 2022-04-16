@@ -10,9 +10,6 @@ module.exports.readPost = (req, res) => {
 }
 
 module.exports.createPost = (req, res) => {
-
-    console.log(req.file.filename)
-
     newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
