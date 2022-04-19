@@ -5,6 +5,7 @@ import Log from '../components/Log';
 import NewPostForm from '../components/Post/NewPostForm';
 import Thread from '../components/Thread'
 import Trends from '../components/Trends';
+import FriendsHint from '../components/Profil/FriendsHint';
 
 export default function Home() {
   const uid = useContext(UidContext);
@@ -24,6 +25,7 @@ export default function Home() {
         <div className='right-side-container'>
           <div className='wrapper'>
             <Trends />
+            {uid && <FriendsHint/>}
           </div>
         </div>
       </div>
