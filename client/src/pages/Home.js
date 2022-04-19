@@ -4,6 +4,7 @@ import LeftNav from '../components/LeftNav'
 import Log from '../components/Log';
 import NewPostForm from '../components/Post/NewPostForm';
 import Thread from '../components/Thread'
+import Trends from '../components/Trends';
 
 export default function Home() {
   const uid = useContext(UidContext);
@@ -18,6 +19,13 @@ export default function Home() {
         ) : <Log signin={true} signup={false} />}
         </div>
         <Thread />
+      </div>
+      <div className='right-side'>
+        <div className='right-side-container'>
+          <div className='wrapper'>
+            <Trends />
+          </div>
+        </div>
       </div>
     </div>
   )
